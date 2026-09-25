@@ -1,0 +1,27 @@
+int n=s.length();
+int[][] dp=new int[n][n];
+for(int i=0;i<n;i++){
+    Arrays.fill(dp[i],-1);
+}
+
+
+
+// Palindrome check using memoization
+
+
+public boolean palindrome(String s,int st,int e,int[][] dp){
+    if(st>=e) return true;
+    if(dp[st][e]!=-1){
+        return dp[st][e]==1;
+    }
+    if(s.charAt(st)!=s.charAt(e)){
+        dp[st][e]=0;
+        return false;
+    }
+    if(palindrome(s,st+1,e-1,dp)) dp[st][e]=1;
+    else dp[st][e]=0;
+    return dp[st][e]==1;
+}
+
+//time complexity: O(n^2)
+//space complexity: O(n^2)
