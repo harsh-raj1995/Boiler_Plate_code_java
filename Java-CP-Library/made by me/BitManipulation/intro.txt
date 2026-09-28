@@ -1,0 +1,3 @@
+
+2's compliment is used for negative number
+2's com = 2^n-x;
