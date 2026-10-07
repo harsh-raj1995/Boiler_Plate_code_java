@@ -1,0 +1,6 @@
+
+//NO OF COMPONENTS
+
+IF(NODE==PARENT[NODE]) THEN
+    count++;
+1
