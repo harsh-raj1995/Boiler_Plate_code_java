@@ -42,3 +42,47 @@ public ArrayList<Integer> dijkstra(int V, int[][] edges, int src) {
 
 
     //timr - elogv
+
+
+    // for k consicutive 
+
+    class Solution {
+    public int shortestPath(int n, int[][] edges, String labels, int k) {
+        List<List<int[]>> adj = new ArrayList<>();
+        int[] cnt=new int[n];
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList<>());
+            cnt[i]=k+1;
+        }
+        for(int i=0;i<edges.length;i++){
+            adj.get(edges[i][0]).add(new int[]{edges[i][1],edges[i][2]});
+        }
+        
+        PriorityQueue<long[]> pq= new PriorityQueue<>((a,b)->(Long.compare(a[0],b[0])));
+        
+        pq.add(new long[]{0,1,0});
+         
+        while(!pq.isEmpty()){
+            long[] u = pq.poll();
+            long d= u[0];
+            int count=(int)u[1];
+            int x= (int)u[2];
+            if(count>=cnt[x]) continue;
+            
+            if(x==n-1) return (int)d;
+            cnt[x]=count;
+            
+
+            for(int[] v : adj.get((int)u[2])){
+                int y= v[0];
+                int r=1;
+                if(labels.charAt(y)==labels.charAt(x)) r= count+1;
+
+                if(r<cnt[y]){
+                    pq.add(new long[]{d+v[1],r,y});
+                }
+            }
+        }
+        return -1;
+    }
+}

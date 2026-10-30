@@ -1,3 +1,6 @@
+//khans algorthms
+
+
 class Solution {
     public int[] findOrder(int n, int[][] edges) {
         int[] indegree = new int[n+1];
@@ -34,3 +37,79 @@ class Solution {
         return ans;
     }
 }
+
+
+
+//using dfs
+
+Stack<Integer> st= new Stack<>();
+    List<List<Integer>> adj= new ArrayList<>();
+    int[] v;
+    public ArrayList<Integer> topoSort(int n, int[][] edges) {
+        // code here
+        ArrayList<Integer> ans= new ArrayList<>();
+        v= new int[n];
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int[] dir: edges){
+            adj.get(dir[0]).add(dir[1]);
+        }
+        for(int i=0;i<n;i++){
+            if(v[i]==0){
+                dfs(i);
+            }
+        }
+        while(!st.isEmpty()){
+            ans.add(st.pop());
+        }
+        return ans;
+    }
+    public void dfs(int node){
+        v[node]=1;
+        for(int i: adj.get(node)){
+            if(v[i]==0){
+                dfs(i);
+            }
+        }
+        st.push(node);
+    }
+
+
+
+//correct
+
+public int[] findOrder(int n, int[][] edges) {
+        int[] indegree = new int[n+1];
+        List<List<Integer>> adj=new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int[] dir: edges){
+            adj.get(dir[0]).add(dir[1]);
+            indegree[dir[1]]=indegree[dir[1]]+1;
+        }
+        int[] v= new int[n+1];
+        int[] ans=new int[n+1];
+        Queue<Integer> q= new LinkedList<>();
+        for(int i=1;i<=n;i++){
+            if(indegree[i]==0){
+                q.offer(i);
+            }
+        }
+        int idx=0;
+        while(!q.isEmpty()){
+            int curr=q.poll();
+            v[curr]=1;
+            ans[idx++]=curr;
+            for(int nxt: adj.get(curr)){
+                indegree[nxt]--;
+                if(indegree[nxt]==0) q.offer(nxt);
+            }
+            
+        }
+        for(int i=1;i<=n;i++){
+            if(v[i]==0) return null;
+        }
+        return ans;
+    }
